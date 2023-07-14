@@ -57,4 +57,15 @@ export class ProductsController {
       return "Product not found";
     }
   }
+
+  @Post(':id/like')
+  async like(@Param('id') id: number): Promise<Product> {
+    const checkIfProductExists: Product = await this.productsService.findOne(id);
+    if (checkIfProductExists) {
+      const product: Product = await this.productsService.update(id, {
+        like: checkIfProductExists.like + 1,
+      });
+      return product;
+    }
+  }
 }

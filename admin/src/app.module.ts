@@ -6,22 +6,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './products/product.entity';
 import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
-const isDevelopment = process.env.NODE_ENV === 'development';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as path from 'path';
+import './dotenv.config';
+const ormconfig: TypeOrmModuleOptions = require(path.resolve(__dirname, '..', 'ormconfig.json'));
+
 @Module({
   imports: [
     ProductsModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'productsManagement',
-      entities: [Product],
-      synchronize: isDevelopment,
-    }),
+    TypeOrmModule.forRoot(ormconfig),
     TypeOrmModule.forFeature([Product])],
-    
+  
   controllers: [AppController, ProductsController],
   providers: [AppService, ProductsService],
 })

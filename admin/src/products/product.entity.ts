@@ -7,4 +7,7 @@ export class Product {
 
   @Column()
   libelle: string;
+  
+  @Column({ default: 0 })
+  like: number;
 }

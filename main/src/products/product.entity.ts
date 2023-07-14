@@ -6,6 +6,8 @@ export type ProductDocument = Product & Document;
 export class Product extends Document {
   @Prop()
   libelle: string;
+  @Prop()
+  like: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
