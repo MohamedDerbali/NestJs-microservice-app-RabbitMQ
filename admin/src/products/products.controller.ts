@@ -23,7 +23,7 @@ export class ProductsController {
   @Get()
   async findAll(): Promise<Product[]> {
     const products: Product[] = await this.productsService.findAll();
-    this.client.emit('allProducts', products);
+    this.client.emit('allProductsAdmin', products);
     return products;
   }
 
@@ -33,8 +33,10 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() Product: Product): Promise<Product> {
-    return this.productsService.create(Product);
+  async create(@Body() Product: Product): Promise<Product> {
+    const product: Product = await this.productsService.create(Product);
+    this.client.emit('addProductAdmin', product);
+    return product;
   }
 
   @Put(':id')
@@ -43,7 +45,16 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.productsService.remove(id);
+  async remove(@Param('id') id: number): Promise<String> {
+    try {
+      const checkIfProductExists: Product = await this.productsService.findOne(id);
+      if (!checkIfProductExists) throw new Error("Product not found");
+      await this.productsService.remove(id);
+      this.client.emit('removeProductAdmin', id);
+      return "Product removed successfully";
+    } catch (e) {
+      this.client.emit('error', e.message);
+      return "Product not found";
+    }
   }
 }
