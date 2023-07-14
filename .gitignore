@@ -1,0 +1,30 @@
+# Directories
+admin/node_modules/
+admin/dist/
+
+main/node_modules/
+main/dist/
+
+# Environment files
+admin/.env
+
+main/.env
+
+# IDE and Editor files
+.vscode/
+
+# Logs
+admin/logs/
+admin/*.log
+admin/npm-debug.log*
+
+main/logs/
+main/*.log
+main/npm-debug.log*
+
+# Build artifacts
+admin/coverage/
+admin/package-lock.json
+
+main/coverage/
+main/package-lock.json
